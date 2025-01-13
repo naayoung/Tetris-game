@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "board.h"
 #include "block.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 int board[HEIGHT][WIDTH] = {0};
 const char* colorBoard[HEIGHT][WIDTH] = {{0}};  // 색상 배열 초기화
@@ -179,5 +184,10 @@ void drawFinalBoard() {
     printf("\n");
     printf("Game Over! Final Board \n\n");
     fflush(stdout);
-    usleep(1000000);
+    
+    #ifdef _WIN32
+    Sleep(1000); // 1000ms = 1초
+    #else
+    usleep(1000000); // 1초
+    #endif
 }

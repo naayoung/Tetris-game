@@ -3,6 +3,7 @@
 
 #ifdef _WIN32
     #include <conio.h>  // 윈도우 환경용
+    #include <windows.h>
 #else
     #include <termios.h>  // 맥/리눅스용
     #include <unistd.h>
@@ -82,7 +83,13 @@ void handleInput() {
             case 'q':  // 종료
                 printf("Exiting...\n");
                 fflush(stdout);  // 출력 버퍼를 즉시 비워서 화면에 표시되도록 합니다.
-                usleep(1000000);
+
+                #ifdef _WIN32
+                Sleep(1000); // 1000ms = 1초
+                #else
+                usleep(1000000); // 1초
+                #endif
+
                 drawFinalBoard(); // 게임 종료 시 최종 보드 출력
                 exit(0); // 게임 종료
                 break;

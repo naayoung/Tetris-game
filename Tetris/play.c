@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "play.h"
 #include "input.h"
 #include "board.h"
 #include "block.h"
 #include "intro.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 #define SCREEN_WIDTH 105  // 화면 너비를 80으로 가정
 
@@ -41,7 +46,11 @@ void startGame() {
         while (!isGameOver()) {
             drawBoard();
             handleInput();
-            usleep(500000); //0.5초 대기
+            #ifdef _WIN32
+                Sleep(500); // 0.5초 대기 (500ms)
+            #else
+                usleep(500000); // 0.5초 대기 (500,000μs)
+            #endif
         }
     } else if (input == 'n' || input == 'N') {
         printCentered("게임을 종료합니다.\n");
